@@ -1,0 +1,14 @@
+[
+    {
+        "model": "apptrakzapi.jobnote",
+        "pk": 1,
+        "fields": {
+            "content": "The 'Totally Cool Developer' role sounds amazing! It's working on some cutting edge technogoly that has a lot of potential.",
+            "created_at": "2018-08-30T19:40:57.060Z",
+            "updated_at": null,
+            "deleted_at": null,
+            "author": 1,
+            "job_id": 1
+        }
+    }
+]

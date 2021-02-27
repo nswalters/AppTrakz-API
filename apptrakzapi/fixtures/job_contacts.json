@@ -1,0 +1,26 @@
+[
+    {
+        "model": "apptrakzapi.jobcontact",
+        "pk": 1,
+        "fields": {
+            "job_id": 2,
+            "contact_id": 1
+        }
+    },
+    {
+        "model": "apptrakzapi.jobcontact",
+        "pk": 2,
+        "fields": {
+            "job_id": 5,
+            "contact_id": 2
+        }
+    },
+    {
+        "model": "apptrakzapi.jobcontact",
+        "pk": 3,
+        "fields": {
+            "job_id": 4,
+            "contact_id": 3
+        }
+    }
+]

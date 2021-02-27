@@ -1,0 +1,32 @@
+[
+    {
+        "model": "apptrakzapi.socialmedia",
+        "pk": 1,
+        "fields": {
+            "name": "LinkedIn",
+            "url": "linkedin.example/user/sdurand",
+            "profile_id": 1,
+            "type_id": 1
+        }
+    },
+    {
+        "model": "apptrakzapi.socialmedia",
+        "pk": 2,
+        "fields": {
+            "name": "Personal Website",
+            "url": "www.mlarsenpersonalwebsite.example",
+            "profile_id": 2,
+            "type_id": 3
+        }
+    },
+    {
+        "model": "apptrakzapi.socialmedia",
+        "pk": 3,
+        "fields": {
+            "name": "Github",
+            "url": "www.github.com"
+            "profile_id": 1,
+            "type_id": 2
+        }
+    }
+]

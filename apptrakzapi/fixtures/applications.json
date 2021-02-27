@@ -1,0 +1,52 @@
+[
+    {
+        "model": "apptrakzapi.application",
+        "pk": 1,
+        "fields": {
+            "user_id": 1,
+            "job_id": 1,
+            "submitted_at": "2018-08-30T19:40:57.060Z",
+            "is_active": true
+        }
+    },
+    {
+        "model": "apptrakzapi.application",
+        "pk": 2,
+        "fields": {
+            "user_id": 1,
+            "job_id": 2,
+            "submitted_at": "2018-09-30T19:40:57.060Z",
+            "is_active": true
+        }
+    },
+    {
+        "model": "apptrakzapi.application",
+        "pk": 3,
+        "fields": {
+            "user_id": 2,
+            "job_id": 3,
+            "submitted_at": "2018-10-02T13:40:57.060Z",
+            "is_active": false
+        }
+    },
+    {
+        "model": "apptrakzapi.application",
+        "pk": 4,
+        "fields": {
+            "user_id": 1,
+            "job_id": 4,
+            "submitted_at": "2018-09-01T10:27:57.060Z",
+            "is_active": false
+        }
+    },
+    {
+        "model": "apptrakzapi.application",
+        "pk": 5,
+        "fields": {
+            "user_id": 2,
+            "job_id": 5,
+            "submitted_at": "2018-09-15T08:11:51.060Z",
+            "is_active": true
+        }
+    }
+]
