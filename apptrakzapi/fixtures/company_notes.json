@@ -1,0 +1,13 @@
+[
+    {
+        "model": "apptrakzapi.companynote",
+        "pk": 1,
+        "fields": {
+            "content": "The First Company is really living up to their name! Spoke with several developers that are either working there or have previously worked there and they said it is/was an awesome experience.",
+            "created_at": "2018-08-30T19:40:57.060Z",
+            "updated_at": "2018-08-30T19:40:57.060Z",
+            "author": 1,
+            "company_id": 1
+        }
+    }
+]

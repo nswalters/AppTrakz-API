@@ -1,0 +1,32 @@
+[
+    {
+        "model": "apptrakzapi.contact",
+        "pk": 1,
+        "fields": {
+            "first_name": "Ilona",
+            "last_name": "Niemela",
+            "phone": "048-020-19-56",
+            "email": "ilona.niemela@example.com"
+        }
+    },
+    {
+        "model": "apptrakzapi.contact",
+        "pk": 2,
+        "fields": {
+            "first_name": "Soren",
+            "last_name": "Laurent",
+            "phone": "06-90-21-46-95",
+            "email": "soren.laurent@example.com"
+        }
+    },
+    {
+        "model": "apptrakzapi.contact",
+        "pk": 3,
+        "fields": {
+            "first_name": "Lucas",
+            "last_name": "Sirko",
+            "phone": "456-516-0767",
+            "email": "lucas.sirko@example.com"
+        }
+    }
+]

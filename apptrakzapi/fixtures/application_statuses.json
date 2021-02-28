@@ -1,0 +1,101 @@
+[
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 1,
+        "fields": {
+            "application_id": 1,
+            "status_id": 1,
+            "updated_at": "2018-08-30T19:40:57.060Z",
+            "reason": null,
+            "is_current": true
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 2,
+        "fields": {
+            "application_id": 2,
+            "status_id": 3,
+            "updated_at": "2018-10-03T09:22:31.001Z",
+            "reason": null,
+            "is_current": true
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 3,
+        "fields": {
+            "application_id": 3,
+            "status_id": 6,
+            "updated_at": "2018-10-05T13:40:57.060Z",
+            "reason": "Client chose to go with more experience.",
+            "is_current": true
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 4,
+        "fields": {
+            "application_id": 4,
+            "status_id": 7,
+            "updated_at": "2018-09-15T10:27:57.060Z",
+            "reason": "Did not feel that the company was a good fit for me at this time.",
+            "is_current": true
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 5,
+        "fields": {
+            "application_id": 5,
+            "status_id": 8,
+            "updated_at": "2018-09-30T14:52:51.060Z",
+            "reason": null,
+            "is_current": true
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 6,
+        "fields": {
+            "application_id": 2,
+            "status_id": 1,
+            "updated_at": "2018-09-30T19:40:57.060Z",
+            "reason": null,
+            "is_current": false
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 7,
+        "fields": {
+            "application_id": 3,
+            "status_id": 5,
+            "updated_at": "2018-10-04T12:15:57.060Z",
+            "reason": null,
+            "is_current": false
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 8,
+        "fields": {
+            "application_id": 3,
+            "status_id": 4,
+            "updated_at": "2018-10-03T12:15:57.060Z",
+            "reason": null,
+            "is_current": false
+        }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 9,
+        "fields": {
+            "application_id": 3,
+            "status_id": 1,
+            "updated_at": "2018-10-02T13:40:57.060Z",
+            "reason": null,
+            "is_current": false
+        }
+    }
+]

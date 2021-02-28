@@ -1,0 +1,72 @@
+[
+    {
+        "model": "apptrakzapi.company",
+        "pk": 1,
+        "fields": {
+            "user_id": 1,
+            "name": "The First Company",
+            "address1": "123 First Street",
+            "address2": "Suite 111",
+            "city": "First City",
+            "state": "TN",
+            "zipcode": "37179",
+            "website": "www.idontexisasfirstcompany.example"
+        }
+    },
+    {
+        "model": "apptrakzapi.company",
+        "pk": 2,
+        "fields": {
+            "user_id": 1,
+            "name": "Second Company, International",
+            "address1": "222 Second Street",
+            "address2": null,
+            "city": "Second City",
+            "state": "TN",
+            "zipcode": "37178",
+            "website": "www.secondcompanyint.example"
+        }
+    },
+    {
+        "model": "apptrakzapi.company",
+        "pk": 3,
+        "fields": {
+            "user_id": 2,
+            "name": "Triple Threat, Inc.",
+            "address1": "333 Third Street",
+            "address2": "Unit 33",
+            "city": "Third City",
+            "state": "TN",
+            "zipcode": "37177",
+            "website": "www.triplethreatinc.example"
+        }
+    },
+    {
+        "model": "apptrakzapi.company",
+        "pk": 4,
+        "fields": {
+            "user_id": 1,
+            "name": "CAP Index, Inc.",
+            "address1": "150 John Robert Thomas Drive",
+            "address2": null,
+            "city": "Exton",
+            "state": "PA",
+            "zipcode": "19341",
+            "website": "https://capindex.com/"
+        }
+    },
+    {
+        "model": "apptrakzapi.company",
+        "pk": 5,
+        "fields": {
+            "user_id": 2,
+            "name": "Gavos Inc.",
+            "address1": "4245 N Central Expy",
+            "address2": "Suite 230",
+            "city": "Dallas",
+            "state": "TX",
+            "zipcode": "75235",
+            "website": "https://www.gavos-helms.com/"
+        }
+    }
+]
