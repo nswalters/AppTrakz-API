@@ -24,7 +24,7 @@
         "pk": 3,
         "fields": {
             "name": "Github",
-            "url": "www.github.com"
+            "url": "www.github.com",
             "profile_id": 1,
             "type_id": 2
         }

@@ -1,23 +1,23 @@
 [
     {
-        "model": "apptrakzapi.socialmediatypes",
+        "model": "apptrakzapi.socialmediatype",
         "pk": 1,
         "fields": {
             "type": "Social Media"
         }
     },
     {
-        "model": "apptrakzapi.socialmediatypes",
+        "model": "apptrakzapi.socialmediatype",
         "pk": 2,
         "fields": {
             "type": "Coding"
         }
     },
     {
-        "model": "apptrakzapi.socialmediatypes",
+        "model": "apptrakzapi.socialmediatype",
         "pk": 3,
         "fields": {
             "type": "Website"
         }
-    },
+    }
 ]
