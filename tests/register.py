@@ -48,3 +48,21 @@ class RegisterTests(APITestCase):
         self.assertEqual(json_response["valid"], True)
         self.assertEqual(json_response["id"], 1)
         self.assertIn("token", json_response)
+
+    def test_login_user_failure(self):
+        """
+        Verify bad credentials are not accepted (returns "valid = false")
+        """
+
+        # Register a user
+        self.test_register_user()
+
+        url = "/login"
+        data = {
+            "username": "testuser",
+            "password": "badpassword"
+        }
+        response = self.client.post(url, data, format='json')
+        json_response = json.loads(response.content)
+
+        self.assertEqual(json_response["valid"], False)
