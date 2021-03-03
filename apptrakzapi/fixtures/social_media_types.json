@@ -3,21 +3,21 @@
         "model": "apptrakzapi.socialmediatype",
         "pk": 1,
         "fields": {
-            "type": "Social Media"
+            "name": "Networking"
         }
     },
     {
         "model": "apptrakzapi.socialmediatype",
         "pk": 2,
         "fields": {
-            "type": "Coding"
+            "name": "Coding"
         }
     },
     {
         "model": "apptrakzapi.socialmediatype",
         "pk": 3,
         "fields": {
-            "type": "Website"
+            "name": "Website"
         }
     }
 ]
