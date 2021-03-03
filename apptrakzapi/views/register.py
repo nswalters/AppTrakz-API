@@ -63,19 +63,10 @@ def register_user(request):
         last_name=req_body['last_name']
     )
 
-    if "bio" in req_body:
-        bio = req_body["bio"]
-    else:
-        bio = None
-
-    if "profile_image" in req_body:
-        profile_image = req_body["profile_image"]
-    else:
-        profile_image = None
-
+    # Set profile to 'None' and let the user update later if they wish
     profile = Profile.objects.create(
-        bio=bio,
-        profile_image=profile_image,
+        bio=None,
+        profile_image=None,
         user=new_user
     )
 
