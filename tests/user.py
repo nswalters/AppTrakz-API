@@ -33,6 +33,7 @@ class UserTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json_response["id"], 1)
+        self.assertEqual(json_response["user"]["username"], "testuser")
 
     def test_update_user_profile(self):
         """
