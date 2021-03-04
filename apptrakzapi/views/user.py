@@ -1,4 +1,7 @@
+import hashlib
+import base64
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from rest_framework import serializers, status
 from rest_framework.decorators import action
@@ -62,14 +65,31 @@ class UserView(ViewSet):
     def profile(self, request):
 
         if request.method == 'PUT':
+            # Update user data
+            current_user = User.objects.get(pk=request.auth.user.id)
+
+            current_user.username = request.data['username']
+            current_user.first_name = request.data['firstName']
+            current_user.last_name = request.data['lastName']
+            current_user.email = request.data['email']
+
+            current_user.save()
+
+            # Update Profile data
             user_profile = Profile.objects.get(user=request.auth.user)
             if 'bio' in request.data:
                 user_profile.bio = request.data['bio']
             else:
                 user_profile.bio = None
 
-            if 'profile_image' in request.data:
-                user_profile.profile_image = request.data['profile_image']
+            if 'profileImage' in request.data:
+                fmt, imgstr = request.data['profileImage'].split(';base64,')
+                ext = fmt.split('/')[-1]
+                hashed_imgstr = hashlib.md5(imgstr.encode('utf-8')).hexdigest()
+                data = ContentFile(base64.b64decode(
+                    imgstr), name=f'{request.auth.user.id}-{hashed_imgstr}.{ext}')
+
+                user_profile.profile_image = data
             else:
                 user_profile.profile_image = None
 
