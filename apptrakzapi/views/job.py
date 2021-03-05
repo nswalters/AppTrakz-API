@@ -20,9 +20,12 @@ class JobView(ViewSet):
 
         # Add application and application status details to each job result
         for job in jobs:
-            job.application = Application.objects.get(job=job)
-            job.application.current_status = ApplicationStatus.objects.get(
-                application=job.application, is_current=True)
+            try:
+                job.application = Application.objects.get(job=job)
+                job.application.current_status = ApplicationStatus.objects.get(
+                    application=job.application, is_current=True)
+            except Exception:
+                job.application = None
 
         serializer = JobSerializer(
             jobs, many=True, context={'request': request})
@@ -33,10 +36,12 @@ class JobView(ViewSet):
         try:
             job = Job.objects.get(pk=pk)
 
-            job.application = Application.objects.get(job=job)
-
-            job.application.current_status = ApplicationStatus.objects.get(
-                application=job.application, is_current=True)
+            try:
+                job.application = Application.objects.get(job=job)
+                job.application.current_status = ApplicationStatus.objects.get(
+                    application=job.application, is_current=True)
+            except Exception:
+                job.application = None
 
             serializer = JobSerializer(job, context={'request': request})
 
@@ -85,5 +90,5 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     # TODO: Need to add 'contacts' to this at somepoint
     class Meta:
         model = Job
-        fields = ('id', 'role_title', 'company', 'type',
-                  'qualifications', 'post_link', 'salary', 'description', 'url', 'application')
+        fields = ('id', 'url', 'role_title', 'company', 'type',
+                  'qualifications', 'post_link', 'salary', 'description', 'application')
