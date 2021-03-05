@@ -4,7 +4,7 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from apptrakzapi.models import Company, Job
+from apptrakzapi.models import Application, ApplicationStatus, Company, Job, Status
 
 
 class JobView(ViewSet):
@@ -18,6 +18,12 @@ class JobView(ViewSet):
         # Return jobs sorted alphabetically
         jobs = Job.objects.filter(user=current_user).order_by('role_title')
 
+        # Add application and application status details to each job result
+        for job in jobs:
+            job.application = Application.objects.get(job=job)
+            job.application.current_status = ApplicationStatus.objects.get(
+                application=job.application, is_current=True)
+
         serializer = JobSerializer(
             jobs, many=True, context={'request': request})
 
@@ -26,8 +32,16 @@ class JobView(ViewSet):
     def retrieve(self, request, pk=None):
         try:
             job = Job.objects.get(pk=pk)
+
+            job.application = Application.objects.get(job=job)
+
+            job.application.current_status = ApplicationStatus.objects.get(
+                application=job.application, is_current=True)
+
             serializer = JobSerializer(job, context={'request': request})
+
             return Response(serializer.data)
+
         except Exception as ex:
             return HttpResponseServerError(ex)
 
@@ -39,14 +53,37 @@ class JobCompanySerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name')
 
 
+class StatusSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Status
+        fields = ('name',)
+
+
+class JobApplicationStatusSerializer(serializers.HyperlinkedModelSerializer):
+
+    status = StatusSerializer(many=False)
+
+    class Meta:
+        model = ApplicationStatus
+        fields = ('updated_at', 'reason', 'is_current', 'status')
+
+
+class JobApplicationSerializer(serializers.HyperlinkedModelSerializer):
+
+    current_status = JobApplicationStatusSerializer(many=False)
+
+    class Meta:
+        model = Application
+        fields = ('submitted_at', 'is_active', 'current_status')
+
+
 class JobSerializer(serializers.HyperlinkedModelSerializer):
 
     company = JobCompanySerializer(many=False)
+    application = JobApplicationSerializer(many=False)
 
-    # Need to add 'contacts', application status,
-    # and if 'active' items to this at somepoint
-    # (i.e. after I get the details view going)
+    # TODO: Need to add 'contacts' to this at somepoint
     class Meta:
         model = Job
         fields = ('id', 'role_title', 'company', 'type',
-                  'qualifications', 'post_link', 'salary', 'description', 'url')
+                  'qualifications', 'post_link', 'salary', 'description', 'url', 'application')
