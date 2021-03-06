@@ -28,7 +28,7 @@ class JobView(ViewSet):
                 job.application = None
 
         serializer = JobSerializer(
-            jobs, many=True, context={'request': request})
+            jobs, many=True, context={'request': None})
 
         return Response(serializer.data)
 
@@ -43,7 +43,7 @@ class JobView(ViewSet):
             except Exception:
                 job.application = None
 
-            serializer = JobSerializer(job, context={'request': request})
+            serializer = JobSerializer(job, context={'request': None})
 
             return Response(serializer.data)
 
