@@ -19,16 +19,21 @@ class CompanyView(ViewSet):
         companies = Company.objects.filter(user=current_user).order_by('name')
 
         serializer = CompanySerializer(
-            companies, many=True, context={'request': request})
+            companies, many=True, context={'request': None})
 
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
+        current_user = User.objects.get(pk=request.auth.user.id)
+
         try:
-            company = Company.objects.get(pk=pk)
+            company = Company.objects.get(pk=pk, user=current_user)
+
             serializer = CompanySerializer(
-                company, context={'request': request})
+                company, context={'request': None})
+
             return Response(serializer.data)
+
         except Exception as ex:
             return HttpResponseServerError(ex)
 
@@ -37,6 +42,6 @@ class CompanySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Company
-        fields = ('id', 'name', 'address1', 'address2',
+        fields = ('id', 'url', 'name', 'address1', 'address2',
                   'city', 'state', 'zipcode', 'website')
         depth = 1
