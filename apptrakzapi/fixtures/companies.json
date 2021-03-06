@@ -10,7 +10,7 @@
             "city": "First City",
             "state": "TN",
             "zipcode": "37179",
-            "website": "www.idontexisasfirstcompany.example"
+            "website": "https://www.idontexisasfirstcompany.example"
         }
     },
     {
@@ -24,7 +24,7 @@
             "city": "Second City",
             "state": "TN",
             "zipcode": "37178",
-            "website": "www.secondcompanyint.example"
+            "website": "https://www.secondcompanyint.example"
         }
     },
     {
@@ -38,7 +38,7 @@
             "city": "Third City",
             "state": "TN",
             "zipcode": "37177",
-            "website": "www.triplethreatinc.example"
+            "website": "https://www.triplethreatinc.example"
         }
     },
     {
