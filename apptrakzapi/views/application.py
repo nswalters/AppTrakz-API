@@ -27,7 +27,7 @@ class ApplicationView(ViewSet):
                     pk=app_status.status_id)
 
         serializer = ApplicationSerializer(
-            applications, many=True, context={'request': request}
+            applications, many=True, context={'request': None}
         )
 
         return Response(serializer.data)
@@ -46,7 +46,7 @@ class ApplicationJobSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Job
-        fields = ('url', 'role_title')
+        fields = ('id', 'url', 'role_title')
 
 
 class ApplicationSerializer(serializers.HyperlinkedModelSerializer):

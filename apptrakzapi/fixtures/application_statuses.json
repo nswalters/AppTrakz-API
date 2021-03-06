@@ -97,5 +97,16 @@
             "reason": null,
             "is_current": false
         }
+    },
+    {
+        "model": "apptrakzapi.applicationstatus",
+        "pk": 10,
+        "fields": {
+            "application_id": 4,
+            "status_id": 1,
+            "updated_at": "2018-09-01T10:27:57.060000Z",
+            "reason": null,
+            "is_current": false
+        }
     }
 ]
