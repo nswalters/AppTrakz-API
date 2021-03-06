@@ -11,6 +11,8 @@ from apptrakzapi.views import *
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'user', UserView, 'user')
 router.register(r'companies', CompanyView, 'company')
+router.register(r'jobs', JobView, 'job')
+router.register(r'applications', ApplicationView, 'application')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

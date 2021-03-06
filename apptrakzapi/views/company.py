@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponseServerError
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
@@ -21,6 +22,15 @@ class CompanyView(ViewSet):
             companies, many=True, context={'request': request})
 
         return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        try:
+            company = Company.objects.get(pk=pk)
+            serializer = CompanySerializer(
+                company, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
 
 
 class CompanySerializer(serializers.HyperlinkedModelSerializer):
