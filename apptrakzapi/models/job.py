@@ -15,5 +15,5 @@ class Job(SafeDeleteModel):
     type = models.CharField(max_length=50)
     qualifications = models.CharField(max_length=500)
     post_link = models.URLField()
-    salary = models.CharField(max_length=20, null=True)
+    salary = models.CharField(max_length=20, null=True, blank=True)
     description = models.TextField()
