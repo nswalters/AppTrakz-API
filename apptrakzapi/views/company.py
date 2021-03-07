@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseServerError
 from rest_framework import serializers, status
 from rest_framework.response import Response
@@ -8,6 +9,39 @@ from apptrakzapi.models import Company
 
 
 class CompanyView(ViewSet):
+    """ Company ViewSet """
+
+    def create(self, request):
+        """ Handle POST operations
+
+        Returns:
+            Response -- JSON serialized game instance
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        company = Company()
+        company.user = current_user
+        company.name = request.data["name"]
+        company.address1 = request.data["address1"]
+
+        if "address2" in request.data:
+            company.address2 = request.data["address2"]
+
+        company.city = request.data["city"]
+        company.state = request.data["state"]
+        company.zipcode = request.data["zipcode"]
+        company.website = request.data["website"]
+
+        # Validate company data then serialize
+        try:
+            company.clean_fields()
+            company.save()
+            serializer = CompanySerializer(company, context={'request': None})
+
+            return Response(serializer.data)
+
+        except ValidationError as ex:
+            return Response({"reason": ex}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
         """
