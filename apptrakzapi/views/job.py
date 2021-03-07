@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseServerError
 from rest_framework import serializers, status
 from rest_framework.response import Response
@@ -8,6 +9,45 @@ from apptrakzapi.models import Application, ApplicationStatus, Company, Job, Sta
 
 
 class JobView(ViewSet):
+    """ Job ViewSet """
+
+    def create(self, request):
+        """ Handle POST operations
+
+        Returns:
+            Response -- JSON serialized game instance
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        # Make sure the company we're adding the job to belongs to the user
+        try:
+            company = Company.objects.get(
+                pk=request.data["company"], user=current_user)
+        except Company.DoesNotExist as ex:
+            return Response({"reason": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        job = Job()
+        job.user = current_user
+        job.company = company
+        job.role_title = request.data["role_title"]
+        job.type = request.data["type"]
+        job.qualifications = request.data["qualifications"]
+        job.post_link = request.data["post_link"]  # Requires 'clean_fields()'
+        job.description = request.data["description"]
+
+        if "salary" in request.data:
+            job.salary = request.data["salary"]
+
+        # Validate job details and serialize
+        try:
+            job.clean_fields()
+            job.save()
+            serializer = NewJobSerializer(job, context={'request': None})
+
+            return Response(serializer.data)
+
+        except ValidationError as ex:
+            return Response({"reason": ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request):
         """
@@ -51,6 +91,13 @@ class JobView(ViewSet):
             return HttpResponseServerError(ex)
 
 
+class NewJobSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Job
+        fields = ('id', 'url', 'company', 'role_title', 'type',
+                  'qualifications', 'post_link', 'salary', 'description')
+
+
 class JobCompanySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -90,5 +137,5 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     # TODO: Need to add 'contacts' to this at somepoint
     class Meta:
         model = Job
-        fields = ('id', 'url', 'role_title', 'company', 'type',
+        fields = ('role_title', 'company', 'type',
                   'qualifications', 'post_link', 'salary', 'description', 'application')
