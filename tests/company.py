@@ -87,3 +87,27 @@ class CompanyTests(APITestCase):
         self.assertEqual(json_response[0]['name'], "Name2")
         self.assertEqual(json_response[1]['id'], 1)
         self.assertEqual(json_response[1]['name'], "ZName1")
+
+    def test_create_company(self):
+        """
+        Verify we can create a company via the API
+        """
+
+        url = "/companies"
+        data = {
+            "name": "TestCompany",
+            "address1": "1234 Test St",
+            "address2": "suite 999",
+            "city": "Testing",
+            "state": "TG",
+            "zipcode": 12345,
+            "website": "https://www.test.com"
+        }
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        response = self.client.post(url, data, format='json')
+        json_response = json.loads(response.content)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json_response["id"], 4)
+        self.assertEqual(json_response["name"], "TestCompany")
+        self.assertEqual(json_response["zipcode"], 12345)
