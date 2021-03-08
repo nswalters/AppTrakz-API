@@ -137,5 +137,5 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     # TODO: Need to add 'contacts' to this at somepoint
     class Meta:
         model = Job
-        fields = ('role_title', 'company', 'type',
+        fields = ('id', 'url', 'role_title', 'company', 'type',
                   'qualifications', 'post_link', 'salary', 'description', 'application')
