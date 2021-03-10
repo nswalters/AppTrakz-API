@@ -67,3 +67,29 @@ class JobTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json_response["id"], 1)
         self.assertEqual(json_response["role_title"], "TestRole")
+
+    def test_update_job(self):
+        """
+        Verify we can update a company via the API
+        """
+
+        self.test_create_job()
+
+        url = "/jobs/1"
+        data = {
+            "company": 1,
+            "role_title": "UpdatedRole",
+            "type": "Test",
+            "qualifications": "TestQuals",
+            "post_link": "https://www.testpostlink.com",
+            "salary": None,
+            "description": "Just a test to create a job."
+        }
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        response = self.client.put(url, data, format='json')
+        json_response = json.loads(response.content)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json_response["id"], 1)
+        self.assertEqual(json_response["role_title"], "UpdatedRole")

@@ -11,6 +11,41 @@ from apptrakzapi.models import Application, ApplicationStatus, Company, Job, Sta
 class JobView(ViewSet):
     """ Job ViewSet """
 
+    def update(self, request, pk=None):
+        """
+        Handle PUT operations for jobs
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+        job = Job.objects.get(pk=pk)
+
+        # Make sure the company we're adding the job to belongs to the user
+        try:
+            company = Company.objects.get(
+                pk=request.data["company"], user=current_user)
+        except Company.DoesNotExist as ex:
+            return Response({"reason": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        job.company = company
+        job.role_title = request.data["role_title"]
+        job.type = request.data["type"]
+        job.qualifications = request.data["qualifications"]
+        job.post_link = request.data["post_link"]  # Requires 'clean_fields()'
+        job.description = request.data["description"]
+
+        if "salary" in request.data:
+            job.salary = request.data["salary"]
+
+        # Validate job details and serialize
+        try:
+            job.clean_fields()
+            job.save()
+            serializer = NewJobSerializer(job, context={'request': None})
+
+            return Response(serializer.data)
+
+        except ValidationError as ex:
+            return Response(ex.args[-1], status=status.HTTP_400_BAD_REQUEST)
+
     def create(self, request):
         """ Handle POST operations
 
