@@ -73,7 +73,6 @@ class ApplicationTests(APITestCase):
         """
         url = "/applications"
         data = {
-            "user": 1,
             "job": 1
         }
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
