@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from rest_framework import serializers, status
 from rest_framework.response import Response
@@ -8,6 +9,68 @@ from apptrakzapi.models import Application, ApplicationStatus, Job, Status
 
 
 class ApplicationView(ViewSet):
+    def update(self, request, pk=None):
+        """
+        Handle PUT requests to update an application
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        # Verify application we are editing belongs to this user
+        try:
+            new_application = Application.objects.get(pk=pk, user=current_user)
+        except Application.DoesNotExist as ex:
+            return Response({"reason": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        # Application model
+        new_application.is_active = request.data["is_active"]
+
+        # ApplicationStatus model
+        #
+        # Need to complete a few steps here
+
+        # 1 - Get the current status record and set that `is_current` value to False
+        current_app_status = ApplicationStatus.objects.get(
+            application=new_application, is_current=True)
+        current_app_status.is_current = False
+
+        # 2 - Get the new status selected
+        new_status = Status.objects.get(pk=request.data["status"])
+
+        new_app_status = ApplicationStatus()
+        new_app_status.status = new_status
+        new_app_status.is_current = True
+        new_app_status.application = new_application
+
+        # 3 - Set the 'reason' and 'status' values accordingly on our application_status
+        if "reason" in request.data:
+            new_app_status.reason = request.data["reason"]
+
+        # Try and save all the records, but if any one operation fails,
+        # error out and don't do any of them.
+        try:
+            new_application.save()
+            current_app_status.save()
+            new_app_status.save()
+
+        except ValidationError as ex:
+            return Response({"reason": ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the final application
+        full_application = Application.objects.get(pk=new_application.id)
+
+        # Append application statuses
+        full_application.statuses = ApplicationStatus.objects.filter(
+            application=full_application)
+
+        # Append status name
+        for app_status in full_application.statuses:
+            app_status.name = Status.objects.get(pk=app_status.status_id)
+
+        serializer = ApplicationSerializer(
+            full_application, context={'request': None})
+
+        return Response(serializer.data)
+
     def create(self, request):
         """
         Handle POST requests to create a new application
