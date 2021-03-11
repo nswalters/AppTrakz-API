@@ -13,6 +13,7 @@ router.register(r'user', UserView, 'user')
 router.register(r'companies', CompanyView, 'company')
 router.register(r'jobs', JobView, 'job')
 router.register(r'applications', ApplicationView, 'application')
+router.register(r'statuses', StatusView, 'status')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

@@ -137,7 +137,7 @@ class JobCompanySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Company
-        fields = ('url', 'name')
+        fields = ('id', 'url', 'name')
 
 
 class StatusSerializer(serializers.HyperlinkedModelSerializer):
