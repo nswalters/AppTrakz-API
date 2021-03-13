@@ -1,12 +1,15 @@
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.contrib.auth.models import User
+from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
 
 
-class Application(models.Model):
+class Application(SafeDeleteModel):
 
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    job = models.ForeignKey("Job", on_delete=models.DO_NOTHING)
+    _safedelete_policy = SOFT_DELETE_CASCADE
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey("Job", on_delete=models.CASCADE)
     submitted_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField()
 
