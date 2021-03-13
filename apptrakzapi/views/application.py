@@ -145,7 +145,7 @@ class ApplicationView(ViewSet):
         for application in applications:
             application.job = Job.objects.get(pk=application.job_id)
             application.statuses = ApplicationStatus.objects.filter(
-                application=application)
+                application=application).order_by('-updated_at')
 
             for app_status in application.statuses:
                 app_status.name = Status.objects.get(
