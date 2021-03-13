@@ -10,6 +10,33 @@ from apptrakzapi.models import Company, Contact, Job, JobContact
 class JobContactView(ViewSet):
     """ Job Contact ViewSet """
 
+    def update(self, request, pk=None):
+        """
+        Handle PUT requests for a job contact
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        try:
+            job_contact = JobContact.objects.get(pk=pk, job__user=current_user)
+        except JobContact.DoesNotExist as ex:
+            return Response({"reason": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        contact = Contact.objects.get(id=job_contact.contact_id)
+
+        contact.first_name = request.data['first_name']
+        contact.last_name = request.data['last_name']
+        contact.phone = request.data['phone']
+        contact.email = request.data['email']
+        contact.save()
+
+        job_contact.contact = contact
+        job_contact.save()
+
+        serializer = JobContactSerializer(
+            job_contact, context={'request': None})
+
+        return Response(serializer.data)
+
     def retrieve(self, request, pk=None):
         """
         Handle GET requests for a specific job contact record
