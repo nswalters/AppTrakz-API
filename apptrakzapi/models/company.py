@@ -7,7 +7,7 @@ class Company(SafeDeleteModel):
 
     _safedelete_policy = SOFT_DELETE_CASCADE
 
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     address1 = models.CharField(max_length=200)
     address2 = models.CharField(max_length=200, null=True, blank=True)
