@@ -10,6 +10,28 @@ from apptrakzapi.models import Company, Contact, Job, JobContact
 class JobContactView(ViewSet):
     """ Job Contact ViewSet """
 
+    def destroy(self, request, pk=None):
+        """
+        Handle DELETE requests for a job contact.
+
+        The job contact record will be 'soft-deleted', i.e. the 'deleted' column will be populated
+        with the timestamp of when the deletion event occurred. This would allow an admin to
+        revert changes if required.
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        try:
+            job_contact = JobContact.objects.get(pk=pk, job__user=current_user)
+            contact = Contact.objects.get(pk=job_contact.contact_id)
+
+            job_contact.delete()
+            contact.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except JobContact.DoesNotExist as ex:
+            return Response({'reason': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
     def create(self, request):
         """
         Handle POST requests to create a new job contact record
