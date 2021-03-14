@@ -11,6 +11,26 @@ from apptrakzapi.models import Company
 class CompanyView(ViewSet):
     """ Company ViewSet """
 
+    def destroy(self, request, pk=None):
+        """
+        Handle DELETE requests for a company.
+
+        The company record will be 'soft-deleted', i.e. the 'deleted' column will be populated
+        with the timestamp of when the deletion event occurred. This would allow an admin to
+        revert changes if required.
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        try:
+            company = Company.objects.get(pk=pk, user=current_user)
+
+            company.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Company.DoesNotExist as ex:
+            return Response({'reason': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
     def update(self, request, pk=None):
         """
         Handle PUT requests for a company

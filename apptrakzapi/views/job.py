@@ -5,11 +5,37 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from apptrakzapi.models import Application, ApplicationStatus, Company, Job, Status
+from apptrakzapi.models import Application, ApplicationStatus, Contact, Company, Job, JobContact, Status
 
 
 class JobView(ViewSet):
     """ Job ViewSet """
+
+    def destroy(self, request, pk=None):
+        """
+        Handle DELETE requests for a job.
+
+        The job record will be 'soft-deleted', i.e. the 'deleted' column will be populated
+        with the timestamp of when the deletion event occurred. This would allow an admin to
+        revert changes if required.
+        """
+        current_user = User.objects.get(pk=request.auth.user.id)
+
+        try:
+            job = Job.objects.get(pk=pk, user=current_user)
+            # job_contacts = JobContact.objects.filter(
+            #     job=pk, job__user=current_user)
+
+            # for contact in job_contacts:
+            #     Contact.objects.get(pk=contact.contact_id).delete()
+
+            job.delete()
+            # job_contacts.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Job.DoesNotExist as ex:
+            return Response({'reason': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def update(self, request, pk=None):
         """
