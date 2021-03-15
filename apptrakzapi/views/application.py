@@ -164,7 +164,8 @@ class ApplicationStatusSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ApplicationStatus
-        fields = ('id', 'updated_at', 'reason', 'is_current', 'name')
+        fields = ('id', 'updated_at', 'reason',
+                  'is_current', 'name', 'created_at')
 
 
 class ApplicationJobSerializer(serializers.HyperlinkedModelSerializer):
