@@ -97,7 +97,7 @@ def create_nodes_array(data):
             node_index += 1
 
     # add default 'pending' node
-    nodes.append({"node": 99, "name": "pending"})
+    nodes.append({"node": node_index, "name": "pending"})
 
     return nodes
 
@@ -121,7 +121,7 @@ def create_links_array(data, nodes):
         current_app = val['app']
 
         source_node = find_node_by_name(nodes, val['node'])['node']
-        target_node = 99  # default to pending
+        target_node = len(nodes) - 1  # default to pending
 
         # Terminating values which will never have a target assigned
         if val["node"] in ("rejected", "withdrew", "accepted", "declined"):
