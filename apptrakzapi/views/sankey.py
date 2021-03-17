@@ -11,9 +11,6 @@ from apptrakzapi.views import Connection
 
 def sankey(request):
     auth_token = request.headers["Authorization"].split(' ')[1]
-    print(auth_token)
-
-    # current_user = 1
 
     if request.method == 'GET':
         with sqlite3.connect(Connection.db_path) as conn:
@@ -24,7 +21,7 @@ def sankey(request):
             db_cursor.execute("""
                 SELECT
                     application_id,
-                    (SELECT user_id FROM authtoken_token WHERE key = ?) as user_id,
+                    (SELECT user_id FROM authtoken_token WHERE key = ?) as uid,
                     CASE
                         WHEN
                             s.id = 1 then 'applied'
@@ -52,7 +49,7 @@ def sankey(request):
                         ON
                             app.id = app_stat.application_id
                 WHERE
-                    app.user_id = user_id
+                    app.user_id = uid
                 GROUP BY
                     application_id, node
                 ORDER BY
