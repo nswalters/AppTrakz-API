@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^register$', register_user),
     url(r'^login$', login_user),
+    url(r'^sankey$', sankey),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
