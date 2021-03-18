@@ -1,5 +1,6 @@
 from .application import ApplicationView
 from .company import CompanyView
+from .company_note import CompanyNoteView
 from .connection import Connection
 from .job import JobView
 from .job_contact import JobContactView
