@@ -15,6 +15,7 @@ router.register(r'jobs', JobView, 'job')
 router.register(r'applications', ApplicationView, 'application')
 router.register(r'statuses', StatusView, 'status')
 router.register(r'job_contacts', JobContactView, 'job_contact')
+router.register(r'company_notes', CompanyNoteView, 'company_note')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
