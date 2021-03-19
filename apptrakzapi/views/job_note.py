@@ -100,6 +100,13 @@ class JobNoteView(ViewSet):
             return Response({'reason': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
 
+class JobNoteJobSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Job
+        fields = ('id', 'role_title')
+
+
 class JobNoteAuthorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -110,7 +117,8 @@ class JobNoteAuthorSerializer(serializers.HyperlinkedModelSerializer):
 class JobNoteSerializer(serializers.HyperlinkedModelSerializer):
 
     author = JobNoteAuthorSerializer(many=False)
+    job = JobNoteJobSerializer(many=False)
 
     class Meta:
         model = JobNote
-        fields = ('id', 'content', 'created_at', 'author')
+        fields = ('id', 'content', 'created_at', 'author', 'job')
