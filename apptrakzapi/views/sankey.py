@@ -66,6 +66,8 @@ def sankey(request):
                             authtoken_token.user_id = auth_user.id
                 WHERE
                     authtoken_token.key = %s
+                AND
+                    app.deleted IS null
                 GROUP BY
                     application_id, node, created_at
                 ORDER BY
