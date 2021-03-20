@@ -1,20 +1,28 @@
 """ Generate sankey diagram data """
 import json
-import sqlite3
+import os
+import psycopg2  # Heroku
+import sqlite3  # Local
 from collections import Counter
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import HttpResponse
 
-from apptrakzapi.views import Connection
+# from apptrakzapi.views import Connection
 
 
 def sankey(request):
     auth_token = request.headers["Authorization"].split(' ')[1]
 
     if request.method == 'GET':
-        with sqlite3.connect(Connection.db_path) as conn:
-            conn.row_factory = sqlite3.Row
+        # Local
+        # with sqlite3.connect(Connection.db_path) as conn:
+
+        # Heroku
+        DATABASE_URL = os.environ['DATABASE_URL']
+        with psycopg2.connect(DATABASE_URL, sslmode='require') as conn:
+            # Local
+            # conn.row_factory = sqlite3.Row
             db_cursor = conn.cursor()
 
             # Get the applications statuses to use in Sankey diagram
