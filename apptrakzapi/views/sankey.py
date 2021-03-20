@@ -23,7 +23,7 @@ def sankey(request):
         with psycopg2.connect(DATABASE_URL, sslmode='require') as conn:
             # Local
             # conn.row_factory = sqlite3.Row
-            db_cursor = conn.cursor()
+            db_cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
             # Get the applications statuses to use in Sankey diagram
 
