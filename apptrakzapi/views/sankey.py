@@ -29,6 +29,7 @@ def sankey(request):
 
             db_cursor.execute("""
                 SELECT DISTINCT
+                    created_at,
                     application_id,
                     CASE
                         WHEN
@@ -72,7 +73,7 @@ def sankey(request):
                 --    application_id, node, created_at
                 ORDER BY
                     -- application_id, created_at, node;
-                    application_id, node;
+                    application_id, created_at, node;
             """, (auth_token, ))
 
             # db_cursor.execute("""
