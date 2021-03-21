@@ -28,7 +28,7 @@ def sankey(request):
             # Get the applications statuses to use in Sankey diagram
 
             db_cursor.execute("""
-                            SELECT
+                SELECT DISTINCT
                     application_id,
                     CASE
                         WHEN
@@ -68,9 +68,10 @@ def sankey(request):
                     authtoken_token.key = %s
                 AND
                     app.deleted IS null
-                GROUP BY
-                    application_id, node, created_at
+                -- GROUP BY
+                --    application_id, node, created_at
                 ORDER BY
+                    -- application_id, created_at, node;
                     application_id, created_at, node;
             """, (auth_token, ))
 
