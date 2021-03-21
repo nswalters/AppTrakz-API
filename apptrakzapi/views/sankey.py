@@ -1,27 +1,35 @@
 """ Generate sankey diagram data """
 import json
-import sqlite3
+import os
+import psycopg2  # Heroku
+import sqlite3  # Local
 from collections import Counter
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import HttpResponse
 
-from apptrakzapi.views import Connection
+# from apptrakzapi.views import Connection
 
 
 def sankey(request):
     auth_token = request.headers["Authorization"].split(' ')[1]
 
     if request.method == 'GET':
-        with sqlite3.connect(Connection.db_path) as conn:
-            conn.row_factory = sqlite3.Row
-            db_cursor = conn.cursor()
+        # Local
+        # with sqlite3.connect(Connection.db_path) as conn:
+
+        # Heroku
+        DATABASE_URL = os.environ['DATABASE_URL']
+        with psycopg2.connect(DATABASE_URL, sslmode='require') as conn:
+            # Local
+            # conn.row_factory = sqlite3.Row
+            db_cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
             # Get the applications statuses to use in Sankey diagram
+
             db_cursor.execute("""
-                SELECT
+                            SELECT
                     application_id,
-                    (SELECT user_id FROM authtoken_token WHERE key = ?) as uid,
                     CASE
                         WHEN
                             s.id = 1 then 'applied'
@@ -48,13 +56,61 @@ def sankey(request):
                     apptrakzapi_application as app
                         ON
                             app.id = app_stat.application_id
+                JOIN
+                    auth_user
+                        ON
+                            app.user_id = auth_user.id
+                JOIN
+                    authtoken_token
+                        ON
+                            authtoken_token.user_id = auth_user.id
                 WHERE
-                    app.user_id = uid
+                    authtoken_token.key = %s
+                AND
+                    app.deleted IS null
                 GROUP BY
-                    application_id, node
+                    application_id, node, created_at
                 ORDER BY
-                    application_id, created_at, node
+                    application_id, created_at, node;
             """, (auth_token, ))
+
+            # db_cursor.execute("""
+            #     SELECT
+            #         application_id,
+            #         (SELECT user_id FROM authtoken_token WHERE key = ?) as uid,
+            #         CASE
+            #             WHEN
+            #                 s.id = 1 then 'applied'
+            #             WHEN
+            #                 s.id between 2 and 5 then 'interviewed'
+            #             WHEN
+            #                 s.id = 6 then 'rejected'
+            #             WHEN
+            #                 s.id = 7 then 'withdrew'
+            #             WHEN
+            #                 s.id = 8 then 'offer'
+            #             WHEN
+            #                 s.id = 9 then 'accepted'
+            #             WHEN
+            #                 s.id = 10 then 'declined'
+            #         END AS node
+            #     FROM
+            #         apptrakzapi_status as s
+            #     JOIN
+            #         apptrakzapi_applicationstatus as app_stat
+            #             ON
+            #                 app_stat.status_id = s.id
+            #     JOIN
+            #         apptrakzapi_application as app
+            #             ON
+            #                 app.id = app_stat.application_id
+            #     WHERE
+            #         app.user_id = uid
+            #     GROUP BY
+            #         application_id, node
+            #     ORDER BY
+            #         application_id, created_at, node
+            # """, (auth_token, ))
 
             records = []
             dataset = db_cursor.fetchall()
